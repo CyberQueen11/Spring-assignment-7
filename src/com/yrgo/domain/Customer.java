@@ -2,6 +2,7 @@ package com.yrgo.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -98,4 +99,22 @@ public class Customer {
 
 	// needed for JPA - ignore until then
 	public Customer() {}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Customer)) return false;
+		Customer customer = (Customer) o;
+		return Objects.equals(getCustomerId(), customer.getCustomerId()) &&
+				Objects.equals(getCompanyName(), customer.getCompanyName()) &&
+				Objects.equals(getEmail(), customer.getEmail()) &&
+				Objects.equals(getTelephone(), customer.getTelephone()) &&
+				Objects.equals(getNotes(), customer.getNotes()) &&
+				Objects.equals(getCalls(), customer.getCalls());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(getCustomerId(), getCompanyName(), getEmail(), getTelephone(), getNotes(), getCalls());
+	}
 }

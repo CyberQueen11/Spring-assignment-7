@@ -1,8 +1,10 @@
 package com.yrgo.services.customers;
 
 import com.yrgo.dataaccess.CustomerDao;
+import com.yrgo.dataaccess.RecordNotFoundException;
 import com.yrgo.domain.Call;
 import com.yrgo.domain.Customer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,15 +13,13 @@ import java.util.List;
 @Service("customerService")
 @Transactional(rollbackFor = {CustomerNotFoundException.class})
 public class CustomerManagementServiceProductionImpl implements CustomerManagementService {
-    private CustomerDao dao;
 
-    public CustomerManagementServiceProductionImpl(CustomerDao dao){
-        this.dao = dao;
-    }
+    @Autowired
+    private CustomerDao dao;
 
     @Override
     public void newCustomer(Customer newCustomer) {
-
+        dao.create(newCustomer);
     }
 
     @Override
@@ -33,8 +33,8 @@ public class CustomerManagementServiceProductionImpl implements CustomerManageme
     }
 
     @Override
-    public Customer findCustomerById(String customerId) throws CustomerNotFoundException {
-        return null;
+    public Customer findCustomerById(String customerId) throws CustomerNotFoundException, RecordNotFoundException {
+        return dao.getById(customerId);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class CustomerManagementServiceProductionImpl implements CustomerManageme
 
     @Override
     public List<Customer> getAllCustomers() {
-        return null;
+       return dao.getAllCustomers();
     }
 
     @Override
